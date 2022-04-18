@@ -3,6 +3,8 @@
 #include <time.h>
 #include <cstdlib>
 #include <windows.h>
+#include <random>
+
 using namespace std;
 
 char field1 ='1';
@@ -52,10 +54,10 @@ string getBoard ()
 
 int getNumber ()
 {
-    struct timespec tm;
-    clock_gettime(CLOCK_MONOTONIC, &tm);
-    int number = rand ()%3+1;
-    return number;
+    random_device device;
+//    std::mt19937 generator(device());
+    uniform_int_distribution<int> distribution(1,3);
+    return distribution(device);
 }
 
 char getSymbol (int number)
