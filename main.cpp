@@ -18,28 +18,36 @@ char field8 ='1';
 char field9 ='1';
 
 
-void getBoard ();
+void drawBoard ();
 int showUsersOption ();
 int respondToUserDecision (int userDecision);
-int moneyOperations (int userDecision, int payed);
+int checkWinningConfiguration (char symbol);
+void respondToWinningConfiguration (int winningPrice);
+int moneyOperations (int userDecision, int currentSaldo, int payed);
 string whetherContinueTheGame(int userDecision);
 int getNumber ();
 char getSymbol (int number);
 void putSymbolOnBoard (char symbol, int sumOfLoop);
 void doPull ();
 
+enum decision
+{
+    PULL = 1,
+    DEPOSIT_MONEY,
+    END
+};
 
 int main() {
     cout << "ONE-ARMED BANDIT" << endl
     << "Pay 50 zl to play." << endl;
 
     int userMoney = 50;
-    cout << "Your current saldo is " << userMoney << endl;
+    cout << "Your current saldo is " << userMoney << " PLN" <<  endl;
 
     cout << "It's board: " << endl;
-    getBoard();
+    drawBoard();
     cout << endl <<  "On the board I can display you symbols: # | % | @ "
-        << endl << "To win you must draw 3 the same symbols on the board.";
+        << endl << "To win you must draw 3 the same symbols vertically or across on the board.";
 
     int userDecision;
     string continueGame;
@@ -47,15 +55,14 @@ int main() {
     {
         userDecision=showUsersOption();
         int payedMoney=respondToUserDecision(userDecision);
-        userMoney = moneyOperations (userDecision, payedMoney);
-        cout << "Your current saldo is " << userMoney << endl;
+        userMoney = moneyOperations (userDecision, userMoney, payedMoney);
         cout << endl << "Your current saldo is " << userMoney << endl;
         continueGame=whetherContinueTheGame(userDecision);
     } while (continueGame == "yes");
 
 }
 
-void getBoard ()
+void drawBoard ()
 {
     cout << "| " << field1 << " || " << field2 << " || " << field3 << " |" << endl
          << "|---||---||---|" << endl
@@ -147,23 +154,23 @@ void putSymbolOnBoard (char symbol, int sumOfLoop)
 
 void doPull ()
 {
+
+//    int prize = 0;
+//    int sum = 0;
+
     for (int i = 1; i <= 9; i++) {
         char symbol = getSymbol(getNumber());
         putSymbolOnBoard(symbol, i);
+        respondToUserDecision(prize);
     }
-    getBoard();
+    drawBoard();
+    checkWinningConfiguration(symbol);
+    cout << endl <<  "price: " << sum;
 }
 
 int respondToUserDecision (int userDecision)
 {
     int payedMoney = 0;
-
-    enum decision
-    {
-        PULL = 1,
-        DEPOSIT_MONEY,
-        END
-    };
 
     switch (userDecision)
     {
@@ -190,27 +197,63 @@ int respondToUserDecision (int userDecision)
 
 }
 
-int moneyOperations (int userDecision, int payed)
+int checkWinningConfiguration (char symbol)
 {
-    int userMoney;
-    if (userDecision == 1)
+    int prize = 0;
+    int sumOfPrize = 0;
+    if ((field1 == symbol && field2 == symbol && field3 == symbol)
+        || (field4== symbol && field5 == symbol && field6 == symbol)
+        || (field7 == symbol && field8 == symbol && field9 == symbol))
         {
-            return userMoney=userMoney-1;
+            prize = 50;
+            sumOfPrize=sumOfPrize+prize;
         }
-    else if (userDecision == 2)
+    if ((field1 == symbol && field5 == symbol && field9 == symbol)
+        || (field3 == symbol && field5 == symbol && field7 == symbol))
         {
-            return userMoney=userMoney+payed;
+            prize = 100;
+            sumOfPrize=sumOfPrize+prize;
+        }
+    return sumOfPrize;
+}
+
+void respondToWinningConfiguration (int winningPrice)
+{
+    switch (winningPrice)
+    {
+        case 50:
+        {
+            cout << "You won! The price is " << winningPrice << "PLN" << endl;
+            break;
+        }
+        case 100:
+        {
+            cout << "You won! The price is " << winningPrice << "PLN" << endl;
+            break;
+        }
+    }
+}
+
+int moneyOperations (int userDecision, int currentSaldo, int payed)
+{
+    if (userDecision == PULL)
+        {
+            return currentSaldo=currentSaldo-10;
+        }
+    else if (userDecision == DEPOSIT_MONEY)
+        {
+            return currentSaldo=currentSaldo+payed;
         }
 }
 
 string whetherContinueTheGame(int userDecision)
 {
     string continueTheGame;
-    if (userDecision == 1 || userDecision == 2)
+    if (userDecision == PULL || userDecision == DEPOSIT_MONEY)
     {
         return continueTheGame = "yes";
     }
-    else if (userDecision == 3)
+    else if (userDecision == END)
     {
         return continueTheGame = "no";
     }
