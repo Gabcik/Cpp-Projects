@@ -21,9 +21,9 @@ char field9 ='1';
 void drawBoard ();
 int showUsersOption ();
 int respondToUserDecision (int userDecision);
-int checkWinningConfiguration (char symbol);
+int checkWinningConfiguration ();
 void respondToWinningConfiguration (int winningPrice);
-int moneyOperations (int userDecision, int currentSaldo, int payed);
+int moneyOperations (int userDecision, int currentSaldo, int payed, int prize);
 string whetherContinueTheGame(int userDecision);
 int getNumber ();
 char getSymbol (int number);
@@ -36,6 +36,7 @@ enum decision
     DEPOSIT_MONEY,
     END
 };
+int prize;
 
 int main() {
     cout << "ONE-ARMED BANDIT" << endl
@@ -55,7 +56,7 @@ int main() {
     {
         userDecision=showUsersOption();
         int payedMoney=respondToUserDecision(userDecision);
-        userMoney = moneyOperations (userDecision, userMoney, payedMoney);
+        userMoney = moneyOperations (userDecision, userMoney, payedMoney, prize);
         cout << endl << "Your current saldo is " << userMoney << endl;
         continueGame=whetherContinueTheGame(userDecision);
     } while (continueGame == "yes");
@@ -154,18 +155,14 @@ void putSymbolOnBoard (char symbol, int sumOfLoop)
 
 void doPull ()
 {
-
-//    int prize = 0;
-//    int sum = 0;
-
     for (int i = 1; i <= 9; i++) {
         char symbol = getSymbol(getNumber());
         putSymbolOnBoard(symbol, i);
-        respondToUserDecision(prize);
     }
     drawBoard();
-    checkWinningConfiguration(symbol);
-    cout << endl <<  "price: " << sum;
+
+    prize = checkWinningConfiguration ();
+    respondToWinningConfiguration(prize);
 }
 
 int respondToUserDecision (int userDecision)
@@ -197,23 +194,91 @@ int respondToUserDecision (int userDecision)
 
 }
 
-int checkWinningConfiguration (char symbol)
+int checkWinningConfiguration ()
 {
     int prize = 0;
     int sumOfPrize = 0;
-    if ((field1 == symbol && field2 == symbol && field3 == symbol)
-        || (field4== symbol && field5 == symbol && field6 == symbol)
-        || (field7 == symbol && field8 == symbol && field9 == symbol))
+    if (field1 == '#' && field2 == '#' && field3 == '#')
         {
             prize = 50;
             sumOfPrize=sumOfPrize+prize;
         }
-    if ((field1 == symbol && field5 == symbol && field9 == symbol)
-        || (field3 == symbol && field5 == symbol && field7 == symbol))
+    if (field4 == '#' && field5 == '#' && field6 == '#')
+        {
+            prize = 50;
+            sumOfPrize=sumOfPrize+prize;
+        }
+
+    if (field7 == '#' && field8 == '#' && field9 == '#')
+        {
+            prize = 50;
+            sumOfPrize=sumOfPrize+prize;
+        }
+    if (field1 == '%' && field2 == '%' && field3 == '%')
+        {
+            prize = 50;
+            sumOfPrize=sumOfPrize+prize;
+        }
+    if (field4 == '%' && field5 == '%' && field6 == '%')
+        {
+            prize = 50;
+            sumOfPrize=sumOfPrize+prize;
+        }
+
+    if (field7 == '%' && field8 == '%' && field9 == '%')
+        {
+            prize = 50;
+            sumOfPrize=sumOfPrize+prize;
+        }
+    if (field1 == '@' && field2 == '@' && field3 == '@')
+        {
+            prize = 50;
+            sumOfPrize=sumOfPrize+prize;
+        }
+    if (field4 == '@' && field5 == '@' && field6 == '@')
+        {
+            prize = 50;
+            sumOfPrize=sumOfPrize+prize;
+        }
+
+    if (field7 == '@' && field8 == '@' && field9 == '@')
+        {
+            prize = 50;
+            sumOfPrize=sumOfPrize+prize;
+        }
+
+
+    if (field1 == '#' && field5 == '#' && field9 == '#')
         {
             prize = 100;
             sumOfPrize=sumOfPrize+prize;
         }
+    if (field3 == '#' && field5 == '#' && field7 == '#')
+        {
+            prize = 100;
+            sumOfPrize=sumOfPrize+prize;
+        }
+    if (field1 == '%' && field5 == '%' && field9 == '%')
+        {
+            prize = 100;
+            sumOfPrize=sumOfPrize+prize;
+        }
+    if (field3 == '%' && field5 == '%' && field7 == '%')
+        {
+            prize = 100;
+            sumOfPrize=sumOfPrize+prize;
+        }
+    if (field1 == '@' && field5 == '@' && field9 == '@')
+        {
+            prize = 100;
+            sumOfPrize=sumOfPrize+prize;
+        }
+    if (field3 == '@' && field5 == '@' && field7 == '@')
+        {
+            prize = 100;
+            sumOfPrize=sumOfPrize+prize;
+        }
+
     return sumOfPrize;
 }
 
@@ -223,22 +288,22 @@ void respondToWinningConfiguration (int winningPrice)
     {
         case 50:
         {
-            cout << "You won! The price is " << winningPrice << "PLN" << endl;
+            cout << endl << "You won! The price is " << winningPrice << "PLN" << endl;
             break;
         }
         case 100:
         {
-            cout << "You won! The price is " << winningPrice << "PLN" << endl;
+            cout << endl << "You won! The price is " << winningPrice << "PLN" << endl;
             break;
         }
     }
 }
 
-int moneyOperations (int userDecision, int currentSaldo, int payed)
+int moneyOperations (int userDecision, int currentSaldo, int payed, int prize)
 {
     if (userDecision == PULL)
         {
-            return currentSaldo=currentSaldo-10;
+            return currentSaldo=currentSaldo-10+prize;
         }
     else if (userDecision == DEPOSIT_MONEY)
         {
