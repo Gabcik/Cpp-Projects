@@ -19,7 +19,7 @@ char field9 ='1';
 
 
 void drawBoard ();
-int showUsersOption ();
+void showUsersOption ();
 int respondToUserDecision (int userDecision);
 int checkWinningConfiguration ();
 void respondToWinningConfiguration (int winningPrice);
@@ -29,6 +29,7 @@ int getNumber ();
 char getSymbol (int number);
 void putSymbolOnBoard (char symbol, int sumOfLoop);
 void doPull ();
+int handleWithNoUserDeposit (int userMoney);
 
 enum decision
 {
@@ -42,7 +43,7 @@ int main() {
     cout << "ONE-ARMED BANDIT" << endl
     << "Pay 50 zl to play." << endl;
 
-    int userMoney = 50;
+    int userMoney = 10;
     cout << "Your current saldo is " << userMoney << " PLN" <<  endl;
 
     cout << "It's board: " << endl;
@@ -54,12 +55,27 @@ int main() {
     string continueGame;
     do
     {
-        userDecision=showUsersOption();
+        showUsersOption();
+        cin >> userDecision;
         int payedMoney=respondToUserDecision(userDecision);
         userMoney = moneyOperations (userDecision, userMoney, payedMoney, prize);
         cout << endl << "Your current saldo is " << userMoney << endl;
+        if (userMoney == 0)
+        {
+            payedMoney=handleWithNoUserDeposit(userMoney);
+            userMoney = moneyOperations (userDecision, userMoney, payedMoney, prize);
+        }
         continueGame=whetherContinueTheGame(userDecision);
-    } while (continueGame == "yes");
+    } while (continueGame == "yes" && userMoney > 0);
+
+    if (userMoney == 0)
+    {
+        cout << endl << "You must deposit money to pull again!"
+        << endl << "Available options: 2. deposit money 3. end"
+        << endl << "My choice is: ";
+        cin >> userDecision;
+        respondToUserDecision(userDecision);
+    }
 
 }
 
@@ -72,15 +88,52 @@ void drawBoard ()
          << "| " << field7 << " || " << field8 << " || " << field9 << " |";
 }
 
-int showUsersOption ()
+void showUsersOption ()
 {
-    int userDecision;
     cout << endl << "Available options:" << endl <<  "1. pull" << endl << "2. deposit money" << endl << "3. end"
          << endl << "My choice is ";
-    cin >> userDecision;
-    return userDecision;
 }
 
+int respondToUserDecision (int userDecision)
+{
+    int payedMoney = 0;
+
+    switch (userDecision)
+    {
+        case PULL:
+        {
+            doPull();
+            break;
+        }
+        case DEPOSIT_MONEY:
+        {
+            cout << "I'm paying";
+            cin >> payedMoney;
+            doPull();
+            break;
+        }
+        case END:
+        {
+            cout << "Thank you for game :)";
+            break;
+        }
+    }
+
+    return payedMoney;
+
+}
+
+void doPull ()
+{
+    for (int i = 1; i <= 9; i++) {
+        char symbol = getSymbol(getNumber());
+        putSymbolOnBoard(symbol, i);
+    }
+    drawBoard();
+
+    prize = checkWinningConfiguration ();
+    respondToWinningConfiguration(prize);
+}
 
 int getNumber ()
 {
@@ -153,46 +206,6 @@ void putSymbolOnBoard (char symbol, int sumOfLoop)
     }
 }
 
-void doPull ()
-{
-    for (int i = 1; i <= 9; i++) {
-        char symbol = getSymbol(getNumber());
-        putSymbolOnBoard(symbol, i);
-    }
-    drawBoard();
-
-    prize = checkWinningConfiguration ();
-    respondToWinningConfiguration(prize);
-}
-
-int respondToUserDecision (int userDecision)
-{
-    int payedMoney = 0;
-
-    switch (userDecision)
-    {
-        case PULL:
-        {
-            doPull();
-            break;
-        }
-        case DEPOSIT_MONEY:
-        {
-            cout << "I'm paying";
-            cin >> payedMoney;
-            doPull();
-            break;
-        }
-        case END:
-        {
-            cout << "Thank you for game :)";
-            break;
-        }
-    }
-
-    return payedMoney;
-
-}
 
 int checkWinningConfiguration ()
 {
@@ -309,6 +322,17 @@ int moneyOperations (int userDecision, int currentSaldo, int payed, int prize)
         {
             return currentSaldo=currentSaldo+payed;
         }
+}
+
+int handleWithNoUserDeposit (int userMoney)
+{
+        int userDecision;
+        cout << endl << "You must deposit money to pull again!"
+             << endl << "Available options: 2. deposit money 3. end"
+             << endl << "My choice is: ";
+        cin >> userDecision;
+        int payedMoney = respondToUserDecision(userDecision);
+        return payedMoney;
 }
 
 string whetherContinueTheGame(int userDecision)
