@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.21)
-project(One_armed_Bandit)
+project(Cpp-Projects)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(One_armed_Bandit main.cpp)
+add_subdirectory(chapter-8/task-4/)
