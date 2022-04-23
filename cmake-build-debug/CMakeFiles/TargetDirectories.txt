@@ -1,6 +1,0 @@
-F:/CLionProjects/cpp/cmake-build-debug/CMakeFiles/Cpp-projects.dir
-F:/CLionProjects/cpp/cmake-build-debug/CMakeFiles/edit_cache.dir
-F:/CLionProjects/cpp/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-F:/CLionProjects/cpp/cmake-build-debug/chapter-8/task-4/CMakeFiles/One_armed_Bandit.dir
-F:/CLionProjects/cpp/cmake-build-debug/chapter-8/task-4/CMakeFiles/edit_cache.dir
-F:/CLionProjects/cpp/cmake-build-debug/chapter-8/task-4/CMakeFiles/rebuild_cache.dir
