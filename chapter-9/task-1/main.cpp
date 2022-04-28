@@ -8,7 +8,7 @@ using namespace std;
 #pragma execution_character_set( "utf-8" )
 
 void divideNumberBasedOn0 (int number);
-string uniqueNumbers1to19 (int number);
+void uniqueNumbers1to19and100 (int number);
 void identifyingDecimalNumbers (int number);
 void identifyingSingularNumber (int number, int decimalNumber);
 
@@ -16,22 +16,24 @@ void identifyingSingularNumber (int number, int decimalNumber);
 int main()
 {
     SetConsoleOutputCP( 65001 );
-    cout << "Enter the number in range of -100 to 100. I will present the number in the form of words." << endl;
-    int userNumber;
 
+    int userNumber;
     do {
+        cout << endl <<  "Enter the number in range of -100 to 100 to continue or enter number more than 100 or less than -100 to end me.\n";
         cin >> userNumber;
         divideNumberBasedOn0(userNumber);
-        uniqueNumbers1to19(userNumber);
-        identifyingDecimalNumbers(userNumber);
-        cout << endl <<  "Enter the number in range of -100 to 100 to continue or >100 to end me.";
-    } while (userNumber <=100);
+        uniqueNumbers1to19and100 (userNumber);
+        if ((userNumber >=20 && userNumber<100) || userNumber <=-20 && userNumber>-100)
+        {
+            identifyingDecimalNumbers(userNumber);
+        }
+    } while (userNumber>-101 && userNumber <101);
 
 }
 
 void divideNumberBasedOn0 (int number)
 {
-    if (number<0)
+    if (number<0 && number >=-100)
     {
         cout << "minus ";
     }
@@ -39,122 +41,109 @@ void divideNumberBasedOn0 (int number)
     {
         cout << "zero ";
     }
-    if (number>0)
+    if (number>0 && number<=100)
     {
         cout << "plus ";
     }
 }
 
-string uniqueNumbers1to19 (int number)
+void uniqueNumbers1to19and100 (int number)
 {
-    string numberInWord;
-    if ( number==1)
+    if (number <0)
     {
-        cout << "jeden";
-        return numberInWord = "jeden";
+        number=number*(-1);
     }
-    if ( number==2)
+
+    switch (number)
     {
-        cout << "dwa";
-        return numberInWord = "dwa";
-    }
-    if ( number==3)
-    {
-        cout << "trzy";
-        return numberInWord = "trzy";
-    }if ( number==4)
-    {
-        cout << "cztery";
-        return numberInWord = "cztery";
-    }if ( number==5)
-    {
-        cout << "pięć";
-        return numberInWord = "pięć";
-    }
-    if ( number==6)
-    {
-        cout << "sześć";
-        return numberInWord = "osiem";
-    }if ( number==7)
-    {
-        cout << "siedem";
-        return numberInWord = "osiem";
-    }if ( number==8)
-    {
-        cout << "osiem";
-        return numberInWord = "osiem";
-    }if ( number==9)
-    {
-        cout << "dziewięć";
-        return numberInWord = "dziewięć";
-    }if ( number==10)
-    {
-        cout << "dziesięć";
-        return numberInWord = "dziesięć";
-    }if ( number==11)
-    {
-        cout << "jedynaście";
-        return numberInWord = "jedynaście";
-    }if ( number==12)
-    {
-        cout << "dwanaście";
-        return numberInWord = "dwanaście";
-    }if ( number==13)
-    {
-        cout << "trzynaście";
-        return numberInWord = "trzynaście";
-    }
-    if ( number==14)
-    {
-        cout << "czternaście";
-        return numberInWord = "czternaście";
-    }if ( number==15)
-    {
-        cout << "piętnaście";
-        return numberInWord = "piętnaście";
-    }if ( number==16)
-    {
-        cout << "szesnaście";
-        return numberInWord = "siedemnaście";
-    }if ( number==17)
-    {
-        cout << "siedemnaście";
-        return numberInWord = "siedemnaście";
-    }if ( number==18)
-    {
-        cout << "osiemnaście";
-        return numberInWord = "osiemnaście";
-    }if ( number==19)
-    {
-        cout << "dziewiętnaście";
-        return numberInWord = "dziewiętnaście";
+        case 1:
+            cout << "jeden";
+            break;
+        case 2:
+            cout << "dwa";
+            break;
+        case 3:
+            cout << "trzy";
+            break;
+        case 4:
+            cout << "cztery";
+            break;
+        case 5:
+            cout << "piec";
+            break;
+        case 6:
+            cout << "sześć";
+            break;
+        case 7:
+            cout << "siedem";
+            break;
+        case 8:
+            cout << "osiem";
+            break;
+        case 9:
+            cout << "dziewięć";
+            break;
+        case 10:
+            cout << "dziesięć";
+            break;
+        case 11:
+            cout << "jedenaście";
+            break;
+        case 12:
+            cout << "dwanaście";
+            break;
+        case 13:
+            cout << "trzynaście";
+            break;
+        case 14:
+            cout << "czternaście";
+            break;
+        case 15:
+            cout << "piętnaście";
+            break;
+        case 16:
+            cout << "szesnaście";
+            break;
+        case 17:
+            cout << "siedemnaście";
+            break;
+        case 18:
+            cout << "osiemnaście";
+            break;
+        case 19:
+            cout << "dziewiętnaście";
+            break;
+        case 100:
+            cout << "sto";
+            break;
     }
 }
 
+
 void identifyingDecimalNumbers (int number)
 {
-    int whichDecimalNumber;
     if (number<0)
     {
-        whichDecimalNumber= (number/10)*(-1);
-    }
-    else
-    {
-        whichDecimalNumber = number/10;
+        number=number*(-1);
     }
 
-    string firstPartOfNumber = uniqueNumbers1to19(whichDecimalNumber);
+    int whichDecimalNumber;
+    whichDecimalNumber=number/10;
+
             if (whichDecimalNumber==2)
             {
-                cout << firstPartOfNumber << "dzieścia";
+                uniqueNumbers1to19and100(whichDecimalNumber);
+                cout << "dzieścia";
             }
     if (whichDecimalNumber==3 || whichDecimalNumber ==4)
     {
-        cout << firstPartOfNumber << "dzieści";
+        uniqueNumbers1to19and100(whichDecimalNumber);
+        cout  << "dzieści";
     }
     if (whichDecimalNumber>4)
     {
-        cout << firstPartOfNumber << "dziesiąt";
+        uniqueNumbers1to19and100(whichDecimalNumber);
+        cout << "dziesiąt";
     }
     identifyingSingularNumber(number, whichDecimalNumber);
 
@@ -162,8 +151,7 @@ void identifyingDecimalNumbers (int number)
 
 void identifyingSingularNumber (int number, int decimalNumber)
 {
-    int singularNumber=number-decimalNumber*10;
-    string singularNumberInWord = uniqueNumbers1to19(singularNumber);
-    cout << singularNumberInWord;
+        int singularNumber = number - decimalNumber * 10;
+        uniqueNumbers1to19and100(singularNumber);
 }
 
