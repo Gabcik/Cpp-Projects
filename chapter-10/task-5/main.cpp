@@ -8,6 +8,7 @@ void generateNumbers(int arrayOfNumbers[], int arraySize);
 void displayNumbers(int arrayOfNumbers[], int arraySize);
 int findTheSmallestElementOfArray (int arrayOfNumbers[], int arraySize);
 int findTheLargestElementOfArray (int arrayOfNumbers[], int arraySize);
+float countArithmeticMean (int arrayOfNumbers[], int arraySize);
 
 int main() {
     int randomNumbers [50];
@@ -18,8 +19,10 @@ int main() {
     displayNumbers(randomNumbers, sizeOfArray);
     int theSmallestElement = findTheSmallestElementOfArray(randomNumbers, sizeOfArray);
     cout << endl << "The smallest element: " << theSmallestElement;
-    int theLargestElement= findTheLargestElementOfArray(randomNumbers, sizeOfArray);
+    int theLargestElement = findTheLargestElementOfArray(randomNumbers, sizeOfArray);
     cout << endl << "The largest element: " << theLargestElement;
+    float arithmeticMean = countArithmeticMean(randomNumbers, sizeOfArray);
+    cout << endl << "Arithmetic mean: " << arithmeticMean;
 
 
     return 0;
@@ -63,4 +66,13 @@ int findTheLargestElementOfArray (int arrayOfNumbers[], int arraySize) {
         }
     }
     return maximum;
+}
+
+float countArithmeticMean (int arrayOfNumbers[], int arraySize) {
+    int sum=0;
+    for (int i=0;i<arraySize;i++) {
+        sum=sum+arrayOfNumbers[i];
+    }
+    float arithmeticMean = (float) sum / arraySize;
+    return arithmeticMean;
 }
