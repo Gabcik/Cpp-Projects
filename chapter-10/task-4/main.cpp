@@ -5,14 +5,30 @@ using namespace std;
 
 int getNumber();
 void generate10Numbers(int arrayOfNumbers[]);
-void sortNumbers (int previousNumber, int currentNumber, int index, int arrayOfNumbers[]);
+void displayNumbers(int arrayOfnumbers[]);
+void sortNumbers (int arrayOfNumbers[]);
 
 int main() {
     int randomNumbers [10];
     generate10Numbers(randomNumbers);
+    displayNumbers(randomNumbers);
+    sortNumbers(randomNumbers);
+    cout << endl <<  "Sorted numbers: ";
+    displayNumbers(randomNumbers);
 
-    printf ("%d %d %d %d %d %d %d %d %d %d", randomNumbers[0],randomNumbers[1], randomNumbers[2], randomNumbers[3], randomNumbers[4], randomNumbers[5], randomNumbers[6], randomNumbers[7], randomNumbers[8], randomNumbers[9]);
     return 0;
+}
+
+void generate10Numbers(int arrayOfNumbers[]){
+//    int previousNumber;
+    for (int i=0;i<10;i++){
+        int number = getNumber();
+        arrayOfNumbers[i]=number;
+//        if (i>0){
+//            sortNumbers(previousNumber, number, i, arrayOfNumbers);
+//        }
+//        previousNumber = number;
+    }
 }
 
 int getNumber(){
@@ -22,21 +38,22 @@ int getNumber(){
     return distribution(device);
 }
 
-void generate10Numbers(int arrayOfNumbers[]){
-    int previousNumber;
-    for (int i=0;i<10;i++){
-        int number = getNumber();
-        arrayOfNumbers[i]=number;
-        if (i>0){
-            sortNumbers(previousNumber, number, i, arrayOfNumbers);
-        }
-        previousNumber = number;
+void displayNumbers(int arrayOfnumbers[]){
+    for (int i=0;i<10;i++) {
+        cout << arrayOfnumbers[i] << " ";
     }
 }
 
-void sortNumbers (int previousNumber, int currentNumber, int index, int arrayOfNumbers[]) {
-    if (currentNumber<previousNumber) {
-        arrayOfNumbers[index-1]=currentNumber;
-        arrayOfNumbers[index]=previousNumber;
+void sortNumbers (int arrayOfNumbers[]) {
+    int pass, temp=0;
+    for (int i=0;i<10;i++) {
+        for (int j=i+1;j<10;j++) {
+            if (arrayOfNumbers[j]<arrayOfNumbers[i]) {
+                temp = arrayOfNumbers[i];
+                arrayOfNumbers[i]=arrayOfNumbers[j];
+                arrayOfNumbers[j]=temp;
+            }
+        pass++;
+        }
     }
 }
