@@ -5,7 +5,7 @@ using namespace std;
 
 int getNumber();
 void generate10Numbers(int arrayOfNumbers[]);
-void displayNumbers(int arrayOfnumbers[]);
+void displayNumbers(int arrayOfNumbers[]);
 void sortNumbers (int arrayOfNumbers[]);
 
 int main() {
@@ -20,14 +20,9 @@ int main() {
 }
 
 void generate10Numbers(int arrayOfNumbers[]){
-//    int previousNumber;
-    for (int i=0;i<10;i++){
+    for (int i=0;i<10;i++) {
         int number = getNumber();
         arrayOfNumbers[i]=number;
-//        if (i>0){
-//            sortNumbers(previousNumber, number, i, arrayOfNumbers);
-//        }
-//        previousNumber = number;
     }
 }
 
@@ -38,14 +33,14 @@ int getNumber(){
     return distribution(device);
 }
 
-void displayNumbers(int arrayOfnumbers[]){
+void displayNumbers(int arrayOfNumbers[]) {
     for (int i=0;i<10;i++) {
-        cout << arrayOfnumbers[i] << " ";
+        cout << arrayOfNumbers[i] << " ";
     }
 }
 
 void sortNumbers (int arrayOfNumbers[]) {
-    int pass, temp=0;
+    int temp=0;
     for (int i=0;i<10;i++) {
         for (int j=i+1;j<10;j++) {
             if (arrayOfNumbers[j]<arrayOfNumbers[i]) {
@@ -53,7 +48,6 @@ void sortNumbers (int arrayOfNumbers[]) {
                 arrayOfNumbers[i]=arrayOfNumbers[j];
                 arrayOfNumbers[j]=temp;
             }
-        pass++;
         }
     }
 }
