@@ -2,23 +2,23 @@
 #include <string>
 using namespace std;
 
-string checkIfSorted (int arrayOfNumbers[]);
+bool checkIfSorted (int arrayOfNumbers[]);
 
 int main() {
-    int numbers [] = {1,2,3,4,5,11,7,8,9,10};
-    string answerIfSorted = checkIfSorted(numbers);
-    cout << "The numbers are sorted: " << answerIfSorted << endl;
+    int numbers [] = {0,2,3,4,5,6,7,11,9,10};
+    bool answerIfSorted = checkIfSorted(numbers);
+    cout << "The numbers are sorted: " << std::boolalpha << answerIfSorted << endl;
     return 0;
 }
 
-string checkIfSorted (int arrayOfNumbers[]) {
-    string response;
+bool checkIfSorted (int arrayOfNumbers[]) {
+    bool response;
     for (int i = 0; i < 9; i++) {
         if (arrayOfNumbers[i] < arrayOfNumbers[i + 1]) {
-            response = "true";
+            response = true;
         }
         else {
-            response = "false";
+            response = false;
             break;
         }
     }
