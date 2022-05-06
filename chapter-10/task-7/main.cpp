@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-char fields [9];
+char fields [9] = {'1','2','3','4','5','6','7','8','9'};
 
 string gamer_1_choice;
 string gamer_2_choice;
@@ -17,7 +17,7 @@ enum Result {
     TIE,
 };
 
-Result checkGameResult();
+Result checkGameResult(int movesCount);
 void displayGameResult (Result result, int whichPlayer);
 
 
@@ -39,7 +39,7 @@ int main() {
         cout << endl << "Gamer " << player << " move: ";
         cin >> chosen_move_gamer;
         do_move_gamer(chosen_move_gamer, player);
-        Result result = checkGameResult();
+        Result result = checkGameResult(sum_all_moves);
         displayGameResult(result, player);
     }
     return 0;
@@ -67,8 +67,9 @@ string respond_to_gamer1_choice(string gamer_1) {
 void board_to_play() {
     for (int i=0;i<9;i+=3) {
         cout << " " << fields[i] << " | " << fields[i+1] << " | " << fields[i+2] << " " << endl;
-        // dodaj ze przy ostatnim obrocie pętli bez cout ponizej
-        cout << "---+---+---" << endl;
+        if (i<6) {
+            cout << "---+---+---" << endl;
+        }
     }
 }
 
@@ -98,23 +99,28 @@ char get_a_sign(int which_player) {
     return sign;
 }
 
-Result checkGameResult () {
+Result checkGameResult (int movesCount) {
     int i=0;
 
-    for (i=0;i<3;i++) {
-        if (fields[i] == fields[i + 3] && fields[i + 3] == fields[i + 6])
+    if (movesCount <= 9) {
+        for (i = 0; i < 3; i++) {
+            if (fields[i] == fields[i + 3] && fields[i + 3] == fields[i + 6])
+                return WIN;
+        }
+
+        for (i = 0; i < 7; i += 3) {
+            if (fields[i] == fields[i + 1] == fields[i + 2])
+                return WIN;
+        }
+
+        if (fields[2] == fields[4] && fields[4] == fields[6]
+            || fields[0] == fields[4] && fields[4] == fields[8])
             return WIN;
     }
 
-    for (i=0;i<7;i+=3) {
-        if (fields[i] == fields[i+1] == fields[i+2])
-            return WIN;
+    if (movesCount == 9 )
+        return TIE;
     }
-
-    if (fields[2] == fields[4] && fields[4] == fields[6]
-        || fields[0] == fields [4] && fields[4] == fields[8])
-            return WIN;
-}
 
 void displayGameResult (Result result, int whichPlayer) {
     switch (result) {
