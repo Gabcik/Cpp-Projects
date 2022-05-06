@@ -2,7 +2,7 @@
 #include <string>
 using namespace std;
 
-char fields [3][3];
+char fields [9];
 
 string gamer_1_choice;
 string gamer_2_choice;
@@ -15,11 +15,10 @@ void do_move_gamer(int chosen_move_gamer, int player);
 enum Result {
     WIN,
     TIE,
-    LOSE
 };
 
 Result checkGameResult();
-void displayGameResult (Result result);
+void displayGameResult (Result result, int whichPlayer);
 
 
 
@@ -41,7 +40,7 @@ int main() {
         cin >> chosen_move_gamer;
         do_move_gamer(chosen_move_gamer, player);
         Result result = checkGameResult();
-        displayGameResult(result);
+        displayGameResult(result, player);
     }
     return 0;
 }
@@ -66,8 +65,8 @@ string respond_to_gamer1_choice(string gamer_1) {
 }
 
 void board_to_play() {
-    for (int i=0;i<3;i++) {
-        cout << " " << fields[i][i] << " | " << fields[i][i+1] << " | " << fields[i][i+2] << " " << endl;
+    for (int i=0;i<9;i+=3) {
+        cout << " " << fields[i] << " | " << fields[i+1] << " | " << fields[i+2] << " " << endl;
         // dodaj ze przy ostatnim obrocie pętli bez cout ponizej
         cout << "---+---+---" << endl;
     }
@@ -76,37 +75,7 @@ void board_to_play() {
 void do_move_gamer(int chosen_move_gamer, int player) {
     char sign=get_a_sign(player);
 
-    switch (chosen_move_gamer) {
-        case 1:
-        fields[0][0] = sign;
-        break;
-        case 2:
-        fields[0][1] = sign;
-        break;
-        case 3:
-        fields[0][2] = sign;
-        break;
-        case 4:
-        fields[1][0] = sign;
-        break;
-        case 5:
-        fields[1][1] = sign;
-        break;
-        case 6:
-        fields[1][2] = sign;
-        break;
-        case 7:
-        fields[2][0] = sign;
-        break;
-        case 8:
-        fields[2][1] = sign;
-        break;
-        case 9:
-        fields[2][2] = sign;
-        break;
-        default:
-        cout << "no correct choice";
-    }
+    fields[chosen_move_gamer-1]=sign;
     board_to_play();
 }
 
@@ -129,27 +98,32 @@ char get_a_sign(int which_player) {
     return sign;
 }
 
-int checkGameResult () {
+Result checkGameResult () {
+    int i=0;
 
-    for (int i=0;i<3;i++) {
-        if (fields[i][0]==fields[i][1] && fields[i][1]==fields[i][2]) {
+    for (i=0;i<3;i++) {
+        if (fields[i] == fields[i + 3] && fields[i + 3] == fields[i + 6])
             return WIN;
-        }
-        else if (fields[0][i]==fields[1][i] && fields[1][i]==fields[2][i]) {
-            return WIN;
-        }
-        else if ( (fields[i][0]==fields[i+1][1] && fields[i+1][1]==fields[i+2][2])
-                ||(fields[i][2]==fields[i+1][1] && fields[i+1][1] == fields [i+2][0]) ) {
-            return WIN;
-        }
-        else {
-            return LOSE;
-        }
     }
+
+    for (i=0;i<7;i+=3) {
+        if (fields[i] == fields[i+1] == fields[i+2])
+            return WIN;
+    }
+
+    if (fields[2] == fields[4] && fields[4] == fields[6]
+        || fields[0] == fields [4] && fields[4] == fields[8])
+            return WIN;
 }
 
-void displayGameResult (bool result) {
-    if result = 1
+void displayGameResult (Result result, int whichPlayer) {
+    switch (result) {
+        case WIN:
+            cout << endl << "Player " << whichPlayer << " won!";
+            break;
+        case TIE:
+            cout << endl << "We have a tie";
+    }
 }
 
 
