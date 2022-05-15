@@ -17,13 +17,13 @@ enum Result {
     TIE,
 };
 
-Result checkGameResult(int movesCount);
+Result checkGameResult(int movesCount, int horizontalDimension, int verticalDimension, char fields[10][10]);
 void displayGameResult (Result result, int whichPlayer);
 
 
 
 int main() {
-    char fields [10][10];
+    char fields [10][10] = { {0,0,0,0,0},  {0,0,0,0,0}};
 
     cout << "Hello! (:) Cross and circle game (:)" << endl;
     cout << endl << "Choose the size of the board. The dimension cannot be less than 4 or greater than 10." << endl
@@ -54,7 +54,7 @@ int main() {
         cout << " Column: ";
         cin >> boardColumn;
         do_move_gamer(boardRow, boardColumn, player, sizeOfHorizontalDimension, sizeOfVerticalDimension, fields);
-        Result result = checkGameResult(sum_all_moves);
+        Result result = checkGameResult(sum_all_moves, sizeOfHorizontalDimension, sizeOfVerticalDimension, fields);
         displayGameResult(result, player);
     }
     return 0;
@@ -84,24 +84,24 @@ void board_to_play(int horizontalDimension, int verticalDimension, char fields[1
     for (int i=0;i<verticalDimension;i++) {
         for (int j = 0; j < horizontalDimension; j++) {
             if (j == 0) {
-            cout << " " << fields[i][j];
+            cout << " " << "x";
             }
             else if (j == horizontalDimension - 1) {
-                cout << fields[i][j] << " " << endl;
+                cout << " | " << "x" << " " << endl;
             }
             else {
-                cout << " | " << fields[i][j] << " | ";
+                cout << " | " << "x";
             }
         }
         for (int j = 0; j < horizontalDimension; j++) {
             if (j == 0) {
-                cout << endl << "--";
+                cout << "--";
             }
             else if (j == horizontalDimension - 1) {
-                cout << endl << "--";
+                cout << "-+---" << endl;
             }
             else {
-                cout << endl << "-+---+-";
+                cout << "-+--" ;
             }
         }
     }
@@ -133,23 +133,39 @@ char get_a_sign(int which_player) {
     return sign;
 }
 
-Result checkGameResult (int movesCount) {
-    int i=0;
-
-    if (movesCount <= 9) {
-        for (i = 0; i < 3; i++) {
-            if (fields[i] == fields[i + 3] && fields[i + 3] == fields[i + 6])
+Result checkGameResult (int movesCount, int horizontalDimension, int verticalDimension, char fields[10][10]) {
+    char currentSign;
+    int sumOfTheSameSigns=0;
+    for (int i=0; i<verticalDimension; i++) {
+        for (int j=0; j<horizontalDimension-1; j++) {
+            currentSign=fields[i][j];
+            char nextSign=fields[i][j+1];
+            if (currentSign==nextSign) {
+                sumOfTheSameSigns++;
+            }
+            else {
+                sumOfTheSameSigns = 0;
+            }
+            if (sumOfTheSameSigns == 4) {
                 return WIN;
+            }
         }
+    }
 
-        for (i = 0; i < 7; i += 3) {
-            if (fields[i] == fields[i + 1] == fields[i + 2])
+    for (int i=0; i<horizontalDimension; i++) {
+        for (int j=0; j<verticalDimension-1; j++) {
+            currentSign=fields[j][i];
+            char nextSign=fields[j+1][i];
+            if (currentSign==nextSign) {
+                sumOfTheSameSigns++;
+            }
+            else {
+                sumOfTheSameSigns = 0;
+            }
+            if (sumOfTheSameSigns == 4) {
                 return WIN;
+            }
         }
-
-        if (fields[2] == fields[4] && fields[4] == fields[6]
-            || fields[0] == fields[4] && fields[4] == fields[8])
-            return WIN;
     }
 
     if (movesCount == 9 )
