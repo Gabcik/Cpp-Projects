@@ -2,15 +2,15 @@
 #include <string>
 using namespace std;
 
-char fields [9] = {'1','2','3','4','5','6','7','8','9'};
+//char fields [9];
 
 string gamer_1_choice;
 string gamer_2_choice;
 
 string respond_to_gamer1_choice(string gamer_1);
-void board_to_play();
+void board_to_play(int horizontalDimension, int verticalDimension, char fields[10][10]);
 char get_a_sign(int which_player);
-void do_move_gamer(int chosen_move_gamer, int player);
+void do_move_gamer(int row, int colum, int player, int horizontalDimension, int verticalDimension, char fields[10][10]);
 
 enum Result {
     WIN,
@@ -23,22 +23,37 @@ void displayGameResult (Result result, int whichPlayer);
 
 
 int main() {
+    char fields [10][10];
 
     cout << "Hello! (:) Cross and circle game (:)" << endl;
-    cout << "Gamer 1: cross or circle?" << endl;
+    cout << endl << "Choose the size of the board. The dimension cannot be less than 4 or greater than 10." << endl
+         << "Horizontal dimension: ";
+    int sizeOfHorizontalDimension;
+    cin >> sizeOfHorizontalDimension;
+    cout << endl << "Vertical dimension: ";
+    int sizeOfVerticalDimension;
+    cin >> sizeOfVerticalDimension;
+
+    cout << endl << "Gamer 1: cross or circle?" << endl;
     cin >> gamer_1_choice;
     respond_to_gamer1_choice(gamer_1_choice);
 
-    cout << endl << "below you see the board to play with numbered fields (from 1 to 9): " << endl << endl;
-    board_to_play();
+    cout << endl << "There is your board to play:" << endl;
+    board_to_play(sizeOfHorizontalDimension, sizeOfVerticalDimension, fields);
+    cout << "First number means a row. Second number means a column";
+    cout << endl << "The winner is the one who puts his mark 4 times in a row";
 
     for (int sum_all_moves = 0; sum_all_moves < 9; sum_all_moves++) {
         int player = sum_all_moves % 2 + 1;
-        int chosen_move_gamer;
+        int boardRow;
+        int boardColumn;
 
-        cout << endl << "Gamer " << player << " move: ";
-        cin >> chosen_move_gamer;
-        do_move_gamer(chosen_move_gamer, player);
+        cout << endl << "Gamer " << player << " move." << endl
+            << "Row: ";
+        cin >> boardRow;
+        cout << " Column: ";
+        cin >> boardColumn;
+        do_move_gamer(boardRow, boardColumn, player, sizeOfHorizontalDimension, sizeOfVerticalDimension, fields);
         Result result = checkGameResult(sum_all_moves);
         displayGameResult(result, player);
     }
@@ -64,20 +79,39 @@ string respond_to_gamer1_choice(string gamer_1) {
 
 }
 
-void board_to_play() {
-    for (int i=0;i<9;i+=3) {
-        cout << " " << fields[i] << " | " << fields[i+1] << " | " << fields[i+2] << " " << endl;
-        if (i<6) {
-            cout << "---+---+---" << endl;
+void board_to_play(int horizontalDimension, int verticalDimension, char fields[10][10]) {
+
+    for (int i=0;i<verticalDimension;i++) {
+        for (int j = 0; j < horizontalDimension; j++) {
+            if (j == 0) {
+            cout << " " << fields[i][j];
+            }
+            else if (j == horizontalDimension - 1) {
+                cout << fields[i][j] << " " << endl;
+            }
+            else {
+                cout << " | " << fields[i][j] << " | ";
+            }
+        }
+        for (int j = 0; j < horizontalDimension; j++) {
+            if (j == 0) {
+                cout << endl << "--";
+            }
+            else if (j == horizontalDimension - 1) {
+                cout << endl << "--";
+            }
+            else {
+                cout << endl << "-+---+-";
+            }
         }
     }
 }
 
-void do_move_gamer(int chosen_move_gamer, int player) {
+void do_move_gamer(int row, int colum, int player, int horizontalDimension, int verticalDimension, char fields[10][10]) {
     char sign=get_a_sign(player);
 
-    fields[chosen_move_gamer-1]=sign;
-    board_to_play();
+    fields[row][colum]=sign;
+    board_to_play(horizontalDimension, verticalDimension, fields);
 }
 
 char get_a_sign(int which_player) {
